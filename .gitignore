@@ -1,0 +1,30 @@
+# Local runtime and generated machine-specific state
+VpnSplitRouting/
+network-snapshot.json
+routing-settings.json
+config.yaml
+system-proxy-before.json
+core.stdout.log
+core.stderr.log
+supervisor.log
+edge-agent/
+
+# VPN, browser and credential material
+*.ovpn
+*.conf
+*.key
+*.pem
+*.p12
+*.pfx
+*.log
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+
+# Release archives are attached to GitHub Releases
+*.zip

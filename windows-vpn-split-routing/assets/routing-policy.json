@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "direct_domain_suffixes": [
+    "avito.ru",
+    "avito.st",
+    "yandex.ru",
+    "yandex.net",
+    "yandex.com",
+    "ya.ru",
+    "yastatic.net",
+    "tochka.com",
+    "tochka.ru"
+  ],
+  "vpn_domain_suffixes": [],
+  "direct_country_suffixes": ["ru", "xn--p1ai"],
+  "use_russian_domain_provider": true,
+  "use_russian_ip_provider": true,
+  "foreign_default": "VPN"
+}

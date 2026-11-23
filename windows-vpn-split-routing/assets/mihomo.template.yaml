@@ -1,0 +1,70 @@
+# Образец для чтения и ручного импорта в Clash Verge Rev.
+# Агент заполняет имена адаптеров по данным целевого компьютера.
+# New-RoutingConfig.ps1 создаёт рабочую конфигурацию автоматически.
+mixed-port: 7897
+allow-lan: false
+bind-address: 127.0.0.1
+mode: rule
+log-level: info
+ipv6: false
+find-process-mode: off
+tun:
+  enable: false
+proxies:
+  - name: ISP_DIRECT
+    type: direct
+    interface-name: "REPLACE_WITH_PHYSICAL_ADAPTER"
+    ip-version: ipv4
+  - name: VPN
+    type: direct
+    interface-name: "REPLACE_WITH_VPN_ADAPTER"
+    ip-version: ipv4
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: redir-host
+  default-nameserver: [1.1.1.1]
+  nameserver:
+    - https://1.1.1.1/dns-query#VPN
+    - https://1.0.0.1/dns-query#VPN
+  direct-nameserver:
+    - https://1.1.1.1/dns-query#ISP_DIRECT
+rule-providers:
+  russian_domains:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ru.mrs
+    path: ./rules/category-ru.mrs
+    interval: 86400
+    proxy: VPN
+  russian_networks:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/ru.mrs
+    path: ./rules/ru-ip.mrs
+    interval: 86400
+    proxy: VPN
+rules:
+  - DOMAIN-SUFFIX,localhost,DIRECT
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+  - DOMAIN-SUFFIX,avito.ru,ISP_DIRECT
+  - DOMAIN-SUFFIX,avito.st,ISP_DIRECT
+  - DOMAIN-SUFFIX,yandex.ru,ISP_DIRECT
+  - DOMAIN-SUFFIX,yandex.net,ISP_DIRECT
+  - DOMAIN-SUFFIX,yandex.com,ISP_DIRECT
+  - DOMAIN-SUFFIX,ya.ru,ISP_DIRECT
+  - DOMAIN-SUFFIX,yastatic.net,ISP_DIRECT
+  - DOMAIN-SUFFIX,tochka.com,ISP_DIRECT
+  - DOMAIN-SUFFIX,tochka.ru,ISP_DIRECT
+  - DOMAIN-SUFFIX,ru,ISP_DIRECT
+  - DOMAIN-SUFFIX,xn--p1ai,ISP_DIRECT
+  - RULE-SET,russian_domains,ISP_DIRECT
+  - RULE-SET,russian_networks,ISP_DIRECT
+  - MATCH,VPN
